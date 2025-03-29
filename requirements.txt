@@ -1,0 +1,6 @@
+Flask
+python-docx
+PyMuPDF
+PyPDF2
+Werkzeug
+pdf2docx

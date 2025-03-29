@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PDFCraft</title>
+  <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='apple-touch-icon.png') }}">
+  <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='favicon-32x32.png') }}">
+  <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='favicon-16x16.png') }}">
+  <link rel="manifest" href="{{ url_for('static', filename='site.webmanifest') }}">  
+  <style>
+    /* Modern Color Palette and Variables */
+    :root {
+      --primary: #4361ee;
+      --primary-dark: #3a56d4;
+      --secondary: #7209b7;
+      --light: #f8f9fa;
+      --dark: #2b2d42;
+      --gray: #8d99ae;
+      --success: #2dc653;
+      --border-radius: 8px;
+      --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+      --transition: all 0.3s ease;
+    }
+
+    /* General Styling */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f0f2f5;
+      color: var(--dark);
+      line-height: 1.6;
+    }
+
+        /* Header */
+        /* Header */
+    header {
+      background: linear-gradient(135deg, #FF5733 0%, #FFBD33 25%, #33FF57 50%, #33A1FF 75%, #9B33FF 100%);
+      background-size: 400% 400%;
+      color: white;
+      text-align: center;
+      padding: 2rem 0;
+      margin-bottom: 2rem;
+      box-shadow: var(--box-shadow);
+      animation: gradientMove 5s ease infinite;
+    }
+
+    /* Keyframes for the moving gradient */
+    @keyframes gradientMove {
+      0% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+
+
+        header h1 {
+          font-weight: 700;
+          font-size: 2.5rem;
+          margin: 0;
+        }
+
+    /* Main Container */
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 0 1.5rem 3rem;
+    }
+
+    /* Card Styling */
+    .card {
+      background: white;
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+      margin-bottom: 2rem;
+      overflow: hidden;
+      transition: var(--transition);
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 7px 14px rgba(0, 0, 0, 0.12), 0 3px 6px rgba(0, 0, 0, 0.08);
+    }
+
+    .card-header {
+      background: var(--light);
+      padding: 1.2rem 1.5rem;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .card-header h2 {
+      margin: 0;
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: var(--primary);
+    }
+
+    .card-body {
+      padding: 1.5rem;
+    }
+
+    /* Form Styling */
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .form-group {
+      margin-bottom: 1.2rem;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      color: var(--dark);
+    }
+
+    input[type="text"],
+    input[type="password"],
+    select {
+      width: 100%;
+      padding: 0.8rem 1rem;
+      border: 1px solid #ddd;
+      border-radius: var(--border-radius);
+      font-size: 1rem;
+      transition: var(--transition);
+    }
+
+    input[type="text"]:focus,
+    input[type="password"]:focus,
+    select:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.15);
+    }
+
+    .file-input-container {
+      position: relative;
+      margin-bottom: 1rem;
+    }
+
+    .file-input-label {
+      display: inline-block;
+      padding: 0.8rem 1.5rem;
+      background-color: var(--light);
+      color: var(--dark);
+      border: 1px dashed var(--gray);
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      width: 100%;
+      text-align: center;
+      transition: var(--transition);
+    }
+
+    .file-input-label:hover {
+      background-color: #e9ecef;
+      border-color: var(--primary);
+    }
+
+    .file-input {
+      position: absolute;
+      left: 0;
+      top: 0;
+      opacity: 0;
+      width: 100%;
+      height: 100%;
+      cursor: pointer;
+    }
+
+    .checkbox-group {
+      margin: 1rem 0;
+    }
+
+    .checkbox-container {
+      display: flex;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
+
+    .checkbox-container input[type="checkbox"] {
+      margin-right: 0.5rem;
+      cursor: pointer;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-block;
+      padding: 0.8rem 1.5rem;
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 500;
+      text-align: center;
+      transition: var(--transition);
+    }
+
+    .btn:hover {
+      background-color: var(--primary-dark);
+      transform: translateY(-2px);
+    }
+
+    .btn-block {
+      width: 100%;
+    }
+
+    /* Lists */
+    ul {
+      list-style-type: none;
+    }
+
+    .file-list {
+      margin-top: 1rem;
+    }
+
+    .file-list li {
+      padding: 0.75rem 1rem;
+      background-color: var(--light);
+      margin-bottom: 0.5rem;
+      border-radius: var(--border-radius);
+      border-left: 3px solid var(--primary);
+    }
+
+    /* Flash Messages */
+    .flashes {
+      margin: 1rem 0;
+    }
+
+    .flashes li {
+      padding: 1rem;
+      background-color: var(--success);
+      color: white;
+      border-radius: var(--border-radius);
+      margin-bottom: 0.5rem;
+    }
+
+    .btn-danger {
+    background-color: #dc3545;
+    }
+
+    .btn-danger:hover {
+    background-color: #c82333;
+    }
+
+    .mt-3 {
+    margin-top: 1rem;
+    }
+
+    .header-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.header-icon {
+  width: 60px;  /* Adjust size as needed */
+  height: 60px; /* Adjust size as needed */
+  margin-right: 10px;  /* Space between the image and text */
+}
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .container {
+        width: 100%;
+        padding: 0 1rem 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-content">
+      <img src="{{ url_for('static', filename='checked.png') }}" alt="Logo" class="header-icon">
+      <h1>PDFCraft</h1>
+    </div>
+  </header>
+  
+
+  <div class="container">
+   <!-- Upload PDF -->
+<div class="card">
+    <div class="card-header">
+      <h2>Upload PDF</h2>
+    </div>
+    <div class="card-body">
+      <form action="/upload" method="post" enctype="multipart/form-data" id="uploadForm">
+        <div class="file-input-container">
+          <label class="file-input-label">
+            <span>Choose a PDF file or drag it here</span>
+            <input type="file" name="pdf_file" accept=".pdf" required class="file-input" id="pdfInput">
+          </label>
+        </div>
+      </form>
+    </div>
+  </div>
+
+    <!-- Display Uploaded PDFs -->
+    <div class="card">
+      <div class="card-header">
+        <h2>Uploaded PDFs</h2>
+      </div>
+      <div class="card-body">
+        {% if uploaded_files %}
+          <ul class="file-list">
+            {% for file in uploaded_files %}
+              <li>{{ file }}</li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p>No PDFs uploaded yet.</p>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Merge PDFs -->
+    <div class="card">
+      <div class="card-header">
+        <h2>Merge PDFs</h2>
+      </div>
+      <div class="card-body">
+        <form action="/merge" method="post" id="mergeForm" onsubmit="setTimeout(() => { location.reload(); }, 1000);">
+          <div class="form-group">
+            <label>Select at least two PDFs to merge:</label>
+            {% if uploaded_files %}
+              <div class="checkbox-group">
+                {% for file in uploaded_files %}
+                  <div class="checkbox-container">
+                    <input type="checkbox" name="merge_files" value="{{ file }}" id="merge-{{ loop.index }}">
+                    <label for="merge-{{ loop.index }}">{{ file }}</label>
+                  </div>
+                {% endfor %}
+              </div>
+              <button type="submit" class="btn btn-block">Merge Selected PDFs</button>
+            {% else %}
+              <p>Please upload PDFs to merge.</p>
+            {% endif %}
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Convert PDF to DOCX -->
+    <div class="card">
+      <div class="card-header">
+        <h2>Convert PDF to DOCX</h2>
+      </div>
+      <div class="card-body">
+        <form action="/convert" method="post">
+          <div class="form-group">
+            <label for="pdf_to_convert">Select a PDF:</label>
+            <select name="pdf_to_convert" id="pdf_to_convert" required>
+              <option value="">-- Select PDF --</option>
+              {% for file in uploaded_files %}
+                <option value="{{ file }}">{{ file }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <button type="submit" class="btn btn-block">Convert to DOCX</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Remove Pages from PDF -->
+    <div class="card">
+      <div class="card-header">
+        <h2>Remove Pages</h2>
+      </div>
+      <div class="card-body">
+        <form action="/remove_pages" method="post" id="removePagesForm" onsubmit="setTimeout(() => { location.reload(); }, 1000);">
+          <div class="form-group">
+            <label for="pdf_to_edit">Select a PDF:</label>
+            <select name="pdf_to_edit" id="pdf_to_edit" required>
+              <option value="">-- Select PDF --</option>
+              {% for file in uploaded_files %}
+                <option value="{{ file }}">{{ file }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="pages_to_remove">Enter pages to remove:</label>
+            <input type="text" name="pages_to_remove" id="pages_to_remove" placeholder="e.g., 2,4,34" required>
+          </div>
+          <button type="submit" class="btn btn-block">Remove Pages</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Set PDF Permissions -->
+    <div class="card">
+      <div class="card-header">
+        <h2>Set PDF Permissions</h2>
+      </div>
+      <div class="card-body">
+        <form action="/set_permissions" method="post" id="permissionsForm" onsubmit="setTimeout(() => { location.reload(); }, 1000);">
+          <div class="form-group">
+            <label for="pdf_permissions">Select a PDF:</label>
+            <select name="pdf_permissions" id="pdf_permissions" required>
+              <option value="">-- Select PDF --</option>
+              {% for file in uploaded_files %}
+                <option value="{{ file }}">{{ file }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Select permissions to restrict:</label>
+            <div class="checkbox-group">
+              <div class="checkbox-container">
+                <input type="checkbox" name="permissions" value="no_print" id="no-print">
+                <label for="no-print">No Printing</label>
+              </div>
+              <div class="checkbox-container">
+                <input type="checkbox" name="permissions" value="no_copy" id="no-copy">
+                <label for="no-copy">No Copying</label>
+              </div>
+              <div class="checkbox-container">
+                <input type="checkbox" name="permissions" value="no_modify" id="no-modify">
+                <label for="no-modify">No Modifications</label>
+              </div>
+              <div class="checkbox-container">
+                <input type="checkbox" name="permissions" value="no_annotate" id="no-annotate">
+                <label for="no-annotate">No Annotations</label>
+              </div>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-block">Apply Permissions</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Password Protect PDF -->
+    <div class="card">
+      <div class="card-header">
+        <h2>Password Protect PDF</h2>
+      </div>
+      <div class="card-body">
+        <form action="/password_protect" method="post" id="passwordProtectForm" onsubmit="setTimeout(() => { location.reload(); }, 1000);">
+          <div class="form-group">
+            <label for="pdf_to_protect">Select a PDF:</label>
+            <select name="pdf_to_protect" id="pdf_to_protect" required>
+              <option value="">-- Select PDF --</option>
+              {% for file in uploaded_files %}
+                <option value="{{ file }}">{{ file }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="password">Enter a password:</label>
+            <input type="password" name="password" id="password" required>
+          </div>
+          <button type="submit" class="btn btn-block">Protect PDF</button>
+        </form>
+      </div>
+    </div>
+    
+    <!-- Display flash messages -->
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul class="flashes">
+          {% for message in messages %}
+            <li>{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+
+
+
+
+      <!-- Delete All PDFs Button -->
+<div class="card">
+    <div class="card-header">
+      <h2>Manage Files</h2>
+    </div>
+    <div class="card-body">
+        <button id="deleteAllBtn" class="btn btn-danger mt-3">Remove All Uploaded PDFs</button>
+        <script>
+            // Get the file input element and the form
+            const fileInput = document.getElementById('pdfInput');
+            const form = document.getElementById('uploadForm');
+
+            // Listen for changes on the file input
+            fileInput.addEventListener('change', function() {
+              // Submit the form when a file is selected
+              form.submit();
+            });
+
+            document.getElementById("deleteAllBtn").addEventListener("click", function() {
+                if (confirm("Are you sure you want to delete all uploaded PDFs?")) {
+                    console.log("Sending delete request to server...");
+                    fetch("/delete_all_pdfs", { 
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        }
+                    })
+                    .then(response => {
+                        console.log("Received response:", response);
+                        return response.json();
+                    })
+                    .then(data => {
+                        console.log("Response data:", data);
+                        alert(data.message || data.error);
+                        location.reload(); // Refresh page after deletion
+                    })
+                    .catch(error => {
+                        console.error("Error:", error);
+                        alert("An error occurred: " + error);
+                    });
+                }
+            });
+        </script>
+    </div>
+  </div>
+
+  </div>
+
+
+</body>
+
+</html>
+

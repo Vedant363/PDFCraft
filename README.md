@@ -51,8 +51,8 @@ pdf_editor_app/
 
 ### **1️⃣ Clone the Repository**  
 ```sh
-git clone https://github.com/Vedant363/pdfcraft.git
-cd pdfcraft
+git clone https://github.com/Vedant363/PDFCraft.git
+cd PDFCraft
 ```
 
 ### **2️⃣ Set Up a Virtual Environment**  
